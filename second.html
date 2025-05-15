@@ -24,7 +24,7 @@
             $("#partnerWebAppControlHandlerBtn").click(function(){
                 console.log("getShortcutsStatusHandlerBtn was clicked.");
                 let message = JSON.stringify(
-                    { type: 'partnerWebAppControlHandlerBtn',"data":{"action": "CLOSE"}}
+                    { type: 'partnerWebAppControlHandler',"data":{"action": "CLOSE"}}
                 )
                 console.log(`send message: ${message}`)
                 window.AndroidWebViewHandler.sendMessage(message)
