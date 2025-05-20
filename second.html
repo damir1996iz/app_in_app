@@ -21,6 +21,13 @@
             <button id="partnerWebAppControlHandlerTest" class="btn btn-primary">Send postmessage(TEST)</button>
         </div>
     </div>
+
+    <div class="card" style="width: 30rem; margin: 2em;">
+        <div class="card-body">
+            <h5 class="card-title">partnerWebAppControlHandlerTest2</h5>
+            <button id="partnerWebAppControlHandlerTest2" class="btn btn-primary">Send postmessage(TEST)(CORRECT)</button>
+        </div>
+    </div>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -28,6 +35,25 @@
 
     <script>
         $(document).ready(function(){
+              const loginMessage = {
+                    type: 'loginViaIdentityProvidersHandler',
+                    data: {
+                      settings: {
+                        title: "Войти через VTB ID",
+                        subtitle: "Браузер Луна запомнит ваш выбор и будет использовать в дальнейшем.",
+                        loginButtonText: "Входить через VTB ID",
+                        shouldNotSaveIdentityProviderChoice: true
+                      },
+                      identityProviders: [
+                        {
+                          loginUri: "https://id.vtb.ru/authorize?client_id=benf-1f14-4a06-88e6-9d98975a2014&redirect_uri=https://lk.benefitty.ru/auth-callback/vtb&response_type=code&scope=birthDate%20userId%20patronymic%20surname%20name%20mainMobilePhone%20gender%20mobilePhone&state=67a442100c9d3461c8301c077c23c0270b7c",
+                          icon: "iVBORw0KGgoAAAANSUhEUgAAAgA…..",
+                          name: "VTB ID"
+                        }
+                      ]
+                    }
+                  }
+            
             $("#partnerWebAppControlHandlerBtn").click(function(){
                 console.log("partnerWebAppControlHandlerTest was clicked.");
                 let message = JSON.stringify(
@@ -52,6 +78,23 @@
                     const gdata = window.AndroidWebViewHandler.sendMessage(loginMessage, '*')
                     console.log("Result of send message", gdata)
                   } 
+            });
+
+            $("#partnerWebAppControlHandlerTest2").click(function(){
+                console.log("partnerWebAppControlHandlerTest(TEST) was clicked.");
+                
+                if(window?.webkit?.messageHandlers) {
+                    console.log("Safari post message sended", loginMessage)
+                    window.webkit.messageHandlers.loginViaIdentityProvidersHandler.postMessage(JSON.stringify(loginMessage));
+                  } else if (window.AndroidWebViewHandler?.sendMessage) {
+                    console.log("sendMessage is available")
+                    const gdata = window.AndroidWebViewHandler.sendMessage(loginMessage, '*')
+                    console.log("Result of send message", gdata)
+                  } else if(window.postMessage) {
+                    console.log("Post message is available")
+                    const gdata = window.postMessage(loginMessage, '*')
+                    console.log("Result of post message", gdata)
+                  }
             });
         });
     </script>
