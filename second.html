@@ -88,7 +88,7 @@
                     window.webkit.messageHandlers.loginViaIdentityProvidersHandler.postMessage(JSON.stringify(loginMessage));
                   } else if (window.AndroidWebViewHandler?.sendMessage) {
                     console.log("sendMessage is available")
-                    const gdata = window.AndroidWebViewHandler.sendMessage(loginMessage, '*')
+                    const gdata = window.AndroidWebViewHandler.sendMessage(JSON.stringify(loginMessage), '*')
                     console.log("Result of send message", gdata)
                   } else if(window.postMessage) {
                     console.log("Post message is available")
